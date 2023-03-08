@@ -94,8 +94,11 @@ class Libro:
     def opcion6(self,libros,opciones_titulo):
         lista_desordenada=opciones_titulo
         lista_ordenada=sorted(lista_desordenada)
+        #recorremos la lista ordenada
         for titulo in lista_ordenada:
+            #recorremos la lista de objetos
             for libro in libros:
+                #aplicamos el metodo opcion2() segun el orden de la lista ordenada
                 if titulo==libro.titulo:
                     libro.opcion2()
                     print("-"*100) 
@@ -139,6 +142,47 @@ class Libro:
                 for libro in resultados_genero:
                     libro.opcion2()
 
+    def opcion8(self,libros):
+        num_autores=int(input("Ingresar número de autores: "))
+
+        libros_encontrados=[]
+        #recorrer la lista de objetos
+        for libro in libros:
+            #si la suma de comas + 1 de cada autor coincide con lo ingresado, lo agregamos a la lista temporal
+            if libro.autor.count(" , ")+1 == num_autores:
+                libros_encontrados.append(libro)
+        
+        #recorremos la lista temporal de objetos y aplicamos el metodo opcion2() a esos objetos
+        for libro in libros_encontrados:
+            libro.opcion2()
+                   
+    def opcion9(self,libros,opciones_id):
+        edita_libro=int(input(f"Qué libro desea editar? {opciones_id} : "))
+
+        #abrir el archivo csv para lectura
+        with open("libros.csv","r") as libros_csv:
+            # leer los datos del archivo csv en una lista
+            data=list(csv.reader(libros_csv))
+
+            # modificar los siguientes datos
+            data[edita_libro][0]=input(f"Id: ")
+            data[edita_libro][1]=input(f"Titulo: ")
+            data[edita_libro][2]=input(f"Genero: ")
+            data[edita_libro][3]=input(f"ISBN: ")
+            data[edita_libro][4]=input(f"Editorial: ")
+            data[edita_libro][5]=input(f"Autor: ")
+
+            #abrir el archivo csv para escritura
+            with open("libros.csv","w",newline="") as file:
+                #escribir los datos modificados ne el archivo csv
+                writer=csv.writer(file)
+                writer.writerows(data)
+            print("Se editó el libro exitosamente.")
+
+
+
+
+
 libros=[]
     
 with open("libros.csv","r") as file:
@@ -160,13 +204,17 @@ with open("libros.csv","r") as file:
     opciones_editorial=[libro.editorial for libro in libros]
     opciones_genero=[libro.genero for libro in libros]
 
+    #lista de opciones metodo opcion9()
+    opciones_id=[libro.id for libro in libros]
+
     #libro.opcion5(libros,opciones_isbn,opciones_titulo)
 
     #libro.opcion6(libros,opciones_titulo)
     #libro.opcion3()   
     #libro.opcion4()
-    libro.opcion7(libros,opciones_autor,opciones_editorial,opciones_genero)
-    
+    #libro.opcion7(libros,opciones_autor,opciones_editorial,opciones_genero)
+    #libro.opcion8(libros)
+    libro.opcion9(libros,opciones_id)
     
     
 
