@@ -1,5 +1,5 @@
 import csv
-    
+import pandas as pd
 
 class Libro:
     def __init__(self,id,titulo,genero,isbn,editorial,autor):
@@ -21,6 +21,27 @@ class Libro:
         print(f"Editorial: {self.editorial}")
         print(f"Autor: {self.autor}")
 
+    def opcion3(self):
+        #abriendo el archivo modo append
+        with open("libros.csv","a",newline='') as libros_csv:
+            # Crear un objeto escritor de CSV
+            writer=csv.writer(libros_csv)
+
+            # Pedir al usuario que ingrese los datos del libro
+            id=input(f"Id: ")
+            titulo=input(f"Titulo: ")
+            genero=input(f"Genero: ")
+            isbn=input(f"ISBN: ")
+            editorial=input(f"Editorial: ")
+            autor=input(f"Autor: ")
+
+            #escribir datos en el archivo csv
+            writer.writerow([id,titulo,genero,isbn,editorial,autor])
+            
+    def opcion4(self):
+        df=pd.read_csv("libros.csv")
+        df=df.iloc[:-1]
+        print(df)
 
     def opcion5(self,libros,opciones_isbn,opciones_titulo):
         buscar_libro=input(f"Buscar libro por ISBN o por titulo?  ")
@@ -56,6 +77,20 @@ class Libro:
                 for libro in resultados2:
                     libro.opcion2()
 
+    #metodo para ordenar alfabeticamente por titulo
+    def opcion6(self,libros,opciones_titulo):
+        lista_desordenada=opciones_titulo
+        lista_ordenada=sorted(lista_desordenada)
+        for titulo in lista_ordenada:
+            for libro in libros:
+                if titulo==libro.titulo:
+                    libro.opcion2()
+                    print("-"*100) 
+
+
+        
+            
+
 libros=[]
     
 with open("libros.csv","r") as file:
@@ -67,13 +102,16 @@ with open("libros.csv","r") as file:
         #libro.opcion2()
         #print("-"*100) 
         libros.append(libro)
-
+        
     #lista de opciones metodo opcion5()
     opciones_isbn=[libro.isbn for libro in libros]
     opciones_titulo=[libro.titulo for libro in libros]
 
-    libro.opcion5(libros,opciones_isbn,opciones_titulo)
-    
+    #libro.opcion5(libros,opciones_isbn,opciones_titulo)
+
+    #libro.opcion6(libros,opciones_titulo)
+    #libro.opcion3()   
+    libro.opcion4()
     
     
     
