@@ -1,5 +1,5 @@
 import csv
-import pandas as pd
+
 
 class Libro:
     def __init__(self,id,titulo,genero,isbn,editorial,autor):
@@ -37,11 +37,24 @@ class Libro:
 
             #escribir datos en el archivo csv
             writer.writerow([id,titulo,genero,isbn,editorial,autor])
-            
+            print("Se agregó el libro exitosamente.")
+
     def opcion4(self):
-        df=pd.read_csv("libros.csv")
-        df=df.iloc[:-1]
-        print(df)
+        # Abrir el archivo libros.csv en modo lectura y escritura
+        with open("libros.csv", "r+") as libros_csv:
+            # Leer todas las filas del archivo y almacenarlas en una lista
+            filas = libros_csv.readlines()
+            
+            # Eliminar la última fila de la lista
+            filas.pop()
+
+            # Volver al inicio del archivo y escribir todas las filas de la lista en el archivo, sobrescribiendo el archivo original
+            libros_csv.seek(0)
+            libros_csv.writelines(filas)
+            libros_csv.truncate()
+            
+            print("El último libro ha sido eliminado exitosamente.")
+
 
     def opcion5(self,libros,opciones_isbn,opciones_titulo):
         buscar_libro=input(f"Buscar libro por ISBN o por titulo?  ")
