@@ -100,9 +100,44 @@ class Libro:
                     libro.opcion2()
                     print("-"*100) 
 
+    def opcion7(self,libros,opciones_autor,opciones_editorial,opciones_genero):
+        buscar_libro=input(f"Buscar libro por autor,editorial o genero?  ")
 
+        if buscar_libro=="autor":
+            print(f"Tienes las siguientes opciones: {opciones_autor}")
+            respuesta_autor=input(f"Cuál eliges? ")
+
+            resultados_autor=[libro for libro in libros if libro.autor==respuesta_autor]        
+            print("-"*100) 
+            if len(resultados_autor)==0:
+                print("No se encontraron resultados")
+            else:
+                for libro in resultados_autor:
+                    libro.opcion2()
         
-            
+        elif buscar_libro=="editorial":
+            print(f"Tienes las siguientes opciones: {opciones_editorial}")
+            respuesta_editorial=input(f"Cuál eliges? ")
+
+            resultados_editorial=[libro for libro in libros if libro.editorial==respuesta_editorial]        
+            print("-"*100) 
+            if len(resultados_editorial)==0:
+                print("No se encontraron resultados")
+            else:
+                for libro in resultados_editorial:
+                    libro.opcion2()
+
+        elif buscar_libro=="genero":
+            print(f"Tienes las siguientes opciones: {opciones_genero}")
+            respuesta_genero=input(f"Cuál eliges? ")
+
+            resultados_genero=[libro for libro in libros if libro.genero==respuesta_genero]        
+            print("-"*100) 
+            if len(resultados_genero)==0:
+                print("No se encontraron resultados")
+            else:
+                for libro in resultados_genero:
+                    libro.opcion2()
 
 libros=[]
     
@@ -120,11 +155,17 @@ with open("libros.csv","r") as file:
     opciones_isbn=[libro.isbn for libro in libros]
     opciones_titulo=[libro.titulo for libro in libros]
 
+    #lista de opciones metodo opcion7()
+    opciones_autor=[libro.autor for libro in libros]
+    opciones_editorial=[libro.editorial for libro in libros]
+    opciones_genero=[libro.genero for libro in libros]
+
     #libro.opcion5(libros,opciones_isbn,opciones_titulo)
 
     #libro.opcion6(libros,opciones_titulo)
     #libro.opcion3()   
-    libro.opcion4()
+    #libro.opcion4()
+    libro.opcion7(libros,opciones_autor,opciones_editorial,opciones_genero)
     
     
     
