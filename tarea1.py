@@ -1,5 +1,5 @@
 import csv
-
+from tabulate import tabulate
 
 class Libro:
     def __init__(self,id,titulo,genero,isbn,editorial,autor):
@@ -13,13 +13,10 @@ class Libro:
     def opcion1(self):
         pass
 
-    def opcion2(self):
-        print(f"Id: {self.id}")
-        print(f"Titulo: {self.titulo}")
-        print(f"Genero: {self.genero}")
-        print(f"ISBN: {self.isbn}")
-        print(f"Editorial: {self.editorial}")
-        print(f"Autor: {self.autor}")
+    def opcion2(self,libros):
+        headers=["Id","Titulo","Genero","ISBN","Editorial","Autor"]
+        lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in libros]
+        print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
 
     def opcion3(self):
         #abriendo el archivo modo append
@@ -57,6 +54,7 @@ class Libro:
 
 
     def opcion5(self,libros,opciones_isbn,opciones_titulo):
+        headers=["Id","Titulo","Genero","ISBN","Editorial","Autor"]
         buscar_libro=input(f"Buscar libro por ISBN o por titulo?  ")
 
         if buscar_libro =="ISBN":
@@ -66,14 +64,13 @@ class Libro:
             # Crear una lista temporal para almacenar los libros que coinciden con la búsqueda
             resultados1 = [libro for libro in libros if libro.isbn == respuesta_ISBN]
 
-            print("-"*100) 
-
             if len(resultados1) == 0:
                 print("No se encontraron resultados.")
             else:
                 # Iterar sobre la lista de resultados e imprimir los detalles de cada libro
-                for libro in resultados1:
-                    libro.opcion2()
+                lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in resultados1]
+                print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
+
                    
 
         elif buscar_libro =="titulo":
@@ -82,28 +79,32 @@ class Libro:
 
             resultados2 = [libro for libro in libros if libro.titulo == respuesta_titulo]
 
-            print("-"*100) 
-
             if len(resultados2) == 0:
                 print("No se encontraron resultados")
             else:
-                for libro in resultados2:
-                    libro.opcion2()
+                lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in resultados2]
+                print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
 
     #metodo para ordenar alfabeticamente por titulo
     def opcion6(self,libros,opciones_titulo):
+        headers=["Id","Titulo","Genero","ISBN","Editorial","Autor"]
         lista_desordenada=opciones_titulo
         lista_ordenada=sorted(lista_desordenada)
+        lista_objetos=[]
         #recorremos la lista ordenada
         for titulo in lista_ordenada:
             #recorremos la lista de objetos
             for libro in libros:
                 #aplicamos el metodo opcion2() segun el orden de la lista ordenada
                 if titulo==libro.titulo:
-                    libro.opcion2()
-                    print("-"*100) 
+                    lista_objetos.append(libro)
+
+        lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in lista_objetos]
+        print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
+        
 
     def opcion7(self,libros,opciones_autor,opciones_editorial,opciones_genero):
+        headers=["Id","Titulo","Genero","ISBN","Editorial","Autor"]
         buscar_libro=input(f"Buscar libro por autor,editorial o genero?  ")
 
         if buscar_libro=="autor":
@@ -115,8 +116,8 @@ class Libro:
             if len(resultados_autor)==0:
                 print("No se encontraron resultados")
             else:
-                for libro in resultados_autor:
-                    libro.opcion2()
+                lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in resultados_autor]
+                print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
         
         elif buscar_libro=="editorial":
             print(f"Tienes las siguientes opciones: {opciones_editorial}")
@@ -127,8 +128,8 @@ class Libro:
             if len(resultados_editorial)==0:
                 print("No se encontraron resultados")
             else:
-                for libro in resultados_editorial:
-                    libro.opcion2()
+                lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in resultados_editorial]
+                print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
 
         elif buscar_libro=="genero":
             print(f"Tienes las siguientes opciones: {opciones_genero}")
@@ -139,10 +140,11 @@ class Libro:
             if len(resultados_genero)==0:
                 print("No se encontraron resultados")
             else:
-                for libro in resultados_genero:
-                    libro.opcion2()
+                lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in resultados_genero]
+                print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
 
     def opcion8(self,libros):
+        headers=["Id","Titulo","Genero","ISBN","Editorial","Autor"]
         num_autores=int(input("Ingresar número de autores: "))
 
         libros_encontrados=[]
@@ -152,9 +154,8 @@ class Libro:
             if libro.autor.count(" , ")+1 == num_autores:
                 libros_encontrados.append(libro)
         
-        #recorremos la lista temporal de objetos y aplicamos el metodo opcion2() a esos objetos
-        for libro in libros_encontrados:
-            libro.opcion2()
+        lista_opciones=[[libro.id,libro.titulo,libro.genero,libro.isbn,libro.editorial,libro.autor] for libro in libros_encontrados]
+        print(tabulate(lista_opciones,headers=headers, tablefmt="grid"))
                    
     def opcion9(self,libros,opciones_id):
         edita_libro=int(input(f"Qué libro desea editar? {opciones_id} : "))
@@ -191,9 +192,8 @@ with open("libros.csv","r") as file:
 
     for read in reader:
         libro=Libro(read["Id"],read["Titulo"],read["Genero"],read["ISBN"],read["Editorial"],read["Autor"])
-        #libro.opcion2()
-        #print("-"*100) 
         libros.append(libro)
+    #libro.opcion2(libros)
         
     #lista de opciones metodo opcion5()
     opciones_isbn=[libro.isbn for libro in libros]
@@ -213,8 +213,8 @@ with open("libros.csv","r") as file:
     #libro.opcion3()   
     #libro.opcion4()
     #libro.opcion7(libros,opciones_autor,opciones_editorial,opciones_genero)
-    #libro.opcion8(libros)
-    libro.opcion9(libros,opciones_id)
+    libro.opcion8(libros)
+    #libro.opcion9(libros,opciones_id)
     
     
 
