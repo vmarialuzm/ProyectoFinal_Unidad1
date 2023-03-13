@@ -66,6 +66,7 @@ class Biblioteca:
         data = []
         for libro in self.libros:
             if len(libro.autores) == n:
+                pass
 
     def editar_libro(self, id, atributo, valor):
         for libro in self.libros:
